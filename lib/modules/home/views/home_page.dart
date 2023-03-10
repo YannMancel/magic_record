@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -13,9 +16,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  late FlutterSoundRecorder _recorder;
+  late bool _hasRecordPermission;
 
-  void _incrementCounter() => setState(() => _counter++);
+  Future<void> _checkPermissions() async {
+    final permissionStatus = await Permission.microphone.request();
+    if (permissionStatus.isGranted) {
+      setState(() => _hasRecordPermission = true);
+      await _recorder.openRecorder();
+      await _recorder.setSubscriptionDuration(
+        const Duration(milliseconds: 500),
+      );
+    }
+  }
+
+  Future<void> _startRecording() async {
+    return _recorder.startRecorder(toFile: 'test_magic_record');
+  }
+
+  Future<void> _stopRecording() async {
+    final recordedSoundUrl = await _recorder.stopRecorder();
+    if (kDebugMode) print('URL: $recordedSoundUrl');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _hasRecordPermission = false;
+    _recorder = FlutterSoundRecorder();
+    _checkPermissions();
+  }
+
+  @override
+  void dispose() {
+    _recorder.closeRecorder();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +60,25 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(8.0),
+            shape: const CircleBorder(),
+          ),
+          onPressed: _hasRecordPermission
+              ? () async {
+                  _recorder.isRecording
+                      ? await _stopRecording()
+                      : await _startRecording();
+
+                  setState(() {});
+                }
+              : null,
+          child: Icon(
+            _recorder.isRecording ? Icons.stop : Icons.mic,
+            size: 60.0,
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

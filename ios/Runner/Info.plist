@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSMicrophoneUsageDescription</key>
+    <string>This application wants to access your microphone to record your speech.</string>
+
 </dict>
 </plist>

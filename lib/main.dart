@@ -6,6 +6,7 @@ import 'package:provider/provider.dart' show Provider;
 void main() {
   runApp(
     Provider<PermissionLogicInterface>(
+      lazy: false,
       create: (_) => const PermissionLogic(),
       child: const App(),
     ),

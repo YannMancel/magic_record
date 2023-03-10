@@ -21,6 +21,8 @@
   * [flutter_sound][dependencies_flutter_sound]
 * Permissions
   * [permission_handler][dependencies_permission_handler]
+* State Manager
+  * [provider][dependencies_provider]
 
 ## Troubleshooting
 
@@ -41,6 +43,7 @@
 [dependencies_flutter_lints]: https://pub.dev/packages/flutter_lints
 [dependencies_flutter_sound]: https://pub.dev/packages/flutter_sound
 [dependencies_permission_handler]: https://pub.dev/packages/permission_handler
+[dependencies_provider]: https://pub.dev/packages/provider
 [useful_android_studio]: https://developer.android.com/studio
 [useful_virtual_device]: https://developer.android.com/studio/run/managing-avds.html
 [useful_developer_options]: https://developer.android.com/studio/debug/dev-options.html#enable

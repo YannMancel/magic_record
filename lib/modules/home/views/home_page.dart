@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:magic_record/_features.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -20,8 +21,8 @@ class _HomePageState extends State<HomePage> {
   late bool _hasRecordPermission;
 
   Future<void> _checkPermissions() async {
-    final permissionStatus = await Permission.microphone.request();
-    if (permissionStatus.isGranted) {
+    final permissionLogic = context.read<PermissionLogicInterface>();
+    if (await permissionLogic.hasRecordPermission) {
       setState(() => _hasRecordPermission = true);
       await _recorder.openRecorder();
       await _recorder.setSubscriptionDuration(

@@ -17,8 +17,8 @@
   * [fvm][dependencies_fvm]
 * Linter
   * [flutter_lints][dependencies_flutter_lints]
-* play and record audio
-  * [flutter_sound][dependencies_flutter_sound]
+* Record Audio
+  * [record][dependencies_record]
 * Permissions
   * [permission_handler][dependencies_permission_handler]
 * State Manager
@@ -41,7 +41,7 @@
 [app_hosting]: https://l-atelier-des-souvenirs.web.app
 [dependencies_fvm]: https://fvm.app/
 [dependencies_flutter_lints]: https://pub.dev/packages/flutter_lints
-[dependencies_flutter_sound]: https://pub.dev/packages/flutter_sound
+[dependencies_record]: https://pub.dev/packages/record
 [dependencies_permission_handler]: https://pub.dev/packages/permission_handler
 [dependencies_provider]: https://pub.dev/packages/provider
 [useful_android_studio]: https://developer.android.com/studio

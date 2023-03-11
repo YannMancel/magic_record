@@ -17,25 +17,25 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: ChangeNotifierProvider<VoiceRecordLogicBase>(
+      body: ChangeNotifierProvider<AudioRecordLogicBase>(
         lazy: false,
-        create: (context) => VoiceRecordLogic(
+        create: (context) => AudioRecordLogic(
           permissionLogic: context.read<PermissionLogicInterface>(),
         ),
         child: const Center(
-          child: _MicButton(),
+          child: _RecordButton(),
         ),
       ),
     );
   }
 }
 
-class _MicButton extends StatelessWidget {
-  const _MicButton();
+class _RecordButton extends StatelessWidget {
+  const _RecordButton();
 
   @override
   Widget build(BuildContext context) {
-    final isRecording = context.watch<VoiceRecordLogicBase>().value;
+    final isRecording = context.watch<AudioRecordLogicBase>().value;
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -44,10 +44,8 @@ class _MicButton extends StatelessWidget {
       ),
       onPressed: () async {
         try {
-          final logic = context.read<VoiceRecordLogicBase>();
-          isRecording
-              ? await logic.stop()
-              : await logic.start(path: 'test_magic_record');
+          final logic = context.read<AudioRecordLogicBase>();
+          isRecording ? await logic.stop() : await logic.start();
         } catch (e) {
           final message = e.toString();
           context.notify = message;

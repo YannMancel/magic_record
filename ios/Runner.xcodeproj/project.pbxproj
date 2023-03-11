@@ -379,7 +379,6 @@
 					"\"path_provider_foundation\"",
 					"-framework",
 					"\"permission_handler_apple\"",
-					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yann.mancel.magicRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -525,7 +524,6 @@
 					"\"path_provider_foundation\"",
 					"-framework",
 					"\"permission_handler_apple\"",
-					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yann.mancel.magicRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -565,7 +563,6 @@
 					"\"path_provider_foundation\"",
 					"-framework",
 					"\"permission_handler_apple\"",
-					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yann.mancel.magicRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";

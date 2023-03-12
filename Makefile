@@ -77,7 +77,7 @@ outdated: ## Check the version of packages
 
 ##
 ## ---------------------------------------------------------------
-## Android
+## Android or Ios
 ## ---------------------------------------------------------------
 ##
 
@@ -85,6 +85,17 @@ outdated: ## Check the version of packages
 run: ## Run application by default debug version
 	@$(call print_color_message,"Run application by default debug version")
 	$(FLUTTER) run $(RUN_VERSION)
+
+##
+## ---------------------------------------------------------------
+## Generator
+## ---------------------------------------------------------------
+##
+
+.PHONY: generate-files
+generate-files: ## Generate files with build_runner
+	@$(call print_color_message,"Generate files with build_runner")
+	$(FLUTTER) pub run build_runner build --delete-conflicting-outputs
 
 ##
 ## ---------------------------------------------------------------

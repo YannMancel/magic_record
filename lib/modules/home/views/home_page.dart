@@ -57,7 +57,7 @@ class _AudioRecorderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isRecording = context.watch<AudioRecorderLogicBase>().value;
+    final audioRecorderState = context.watch<AudioRecorderLogicBase>().value;
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -67,14 +67,20 @@ class _AudioRecorderButton extends StatelessWidget {
       onPressed: () async {
         try {
           final logic = context.read<AudioRecorderLogicBase>();
-          isRecording ? await logic.stop() : await logic.start();
+          await audioRecorderState.when<Future<void>>(
+            on: logic.stop,
+            off: logic.start,
+          );
         } catch (e) {
           final message = e.toString();
           context.notify = message;
         }
       },
       child: Icon(
-        isRecording ? Icons.stop : Icons.mic,
+        audioRecorderState.when<IconData>(
+          on: () => Icons.stop,
+          off: () => Icons.mic,
+        ),
         size: 60.0,
       ),
     );

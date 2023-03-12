@@ -24,6 +24,10 @@
   * [permission_handler][dependencies_permission_handler]
 * State Manager
   * [provider][dependencies_provider]
+* Data class generator
+  * [build_runner][dependencies_build_runner]
+  * [freezed][dependencies_freezed]
+  * [freezed_annotation][dependencies_freezed_annotation]
 
 ## Troubleshooting
 
@@ -46,6 +50,9 @@
 [dependencies_just_audio]: https://pub.dev/packages/just_audio
 [dependencies_permission_handler]: https://pub.dev/packages/permission_handler
 [dependencies_provider]: https://pub.dev/packages/provider
+[dependencies_build_runner]: https://pub.dev/packages/build_runner
+[dependencies_freezed]: https://pub.dev/packages/freezed
+[dependencies_freezed_annotation]: https://pub.dev/packages/freezed_annotation
 [useful_android_studio]: https://developer.android.com/studio
 [useful_virtual_device]: https://developer.android.com/studio/run/managing-avds.html
 [useful_developer_options]: https://developer.android.com/studio/debug/dev-options.html#enable

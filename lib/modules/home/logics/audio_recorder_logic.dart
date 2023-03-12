@@ -2,14 +2,15 @@ import 'package:flutter/foundation.dart' show ValueNotifier, kDebugMode;
 import 'package:magic_record/_features.dart';
 import 'package:record/record.dart' show Record;
 
-/// The voice record logic is a [ValueNotifier] which notifies the recording
-/// state.
+/// The voice record logic is a [ValueNotifier] of [AudioRecorderState] which
+/// notifies the recording state.
 ///
 /// In addition, it has the following methods:
 /// - [AudioRecorderLogicBase.audioPath]
 /// - [AudioRecorderLogicBase.start]
 /// - [AudioRecorderLogicBase.stop]
-abstract class AudioRecorderLogicBase extends ValueNotifier<bool> {
+abstract class AudioRecorderLogicBase
+    extends ValueNotifier<AudioRecorderState> {
   AudioRecorderLogicBase(super.value);
 
   String? get audioPath;
@@ -18,13 +19,14 @@ abstract class AudioRecorderLogicBase extends ValueNotifier<bool> {
 }
 
 class AudioRecorderLogic extends AudioRecorderLogicBase {
-  AudioRecorderLogic({required this.permissionLogic}) : super(false);
+  AudioRecorderLogic({required this.permissionLogic})
+      : super(const AudioRecorderState.off());
 
   final PermissionLogicInterface permissionLogic;
 
   final _recorder = Record();
 
-  set _notify(bool state) => value = state;
+  set _notify(AudioRecorderState state) => value = state;
 
   String? _audioPath;
   @override
@@ -41,7 +43,7 @@ class AudioRecorderLogic extends AudioRecorderLogicBase {
 
     _audioPath = null;
     _recorder.start(path: path);
-    _notify = await _recorder.isRecording();
+    _notify = const AudioRecorderState.on();
   }
 
   /// Stops the voice recording.
@@ -49,7 +51,7 @@ class AudioRecorderLogic extends AudioRecorderLogicBase {
   Future<void> stop() async {
     _audioPath = await _recorder.stop();
     if (kDebugMode) print('Audio Path: $_audioPath');
-    _notify = await _recorder.isRecording();
+    _notify = const AudioRecorderState.off();
   }
 
   @override

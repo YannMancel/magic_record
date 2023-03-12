@@ -1,0 +1,9 @@
+# https://www.wilsonwilson.dev/articles/flutter-build-yaml/
+
+targets:
+  $default:
+    builders:
+      freezed|freezed:
+        enabled: true
+        generate_for:
+          - "lib/core/models/audio_recorder_state.dart"

@@ -98,7 +98,7 @@ class _AudioPlayerButton extends StatelessWidget {
 
     if (audioPath == null) return const SizedBox.shrink();
 
-    final isPlaying = context.watch<AudioPlayerLogicBase>().value;
+    final audioPlayerState = context.watch<AudioPlayerLogicBase>().value;
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -108,14 +108,20 @@ class _AudioPlayerButton extends StatelessWidget {
       onPressed: () async {
         try {
           final logic = context.read<AudioPlayerLogicBase>();
-          isPlaying ? await logic.pause() : await logic.play(path: audioPath);
+          await audioPlayerState.when<Future<void>>(
+            play: logic.pause,
+            pause: () => logic.play(path: audioPath),
+          );
         } catch (e) {
           final message = e.toString();
           context.notify = message;
         }
       },
       child: Icon(
-        isPlaying ? Icons.pause : Icons.play_arrow,
+        audioPlayerState.when<IconData>(
+          play: () => Icons.pause,
+          pause: () => Icons.play_arrow,
+        ),
         size: 60.0,
       ),
     );

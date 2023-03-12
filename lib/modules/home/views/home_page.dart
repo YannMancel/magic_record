@@ -34,10 +34,7 @@ class HomePage extends StatelessWidget {
           ),
           ChangeNotifierProvider<AudioPlayerLogicBase>(
             lazy: true,
-            create: (context) => AudioPlayerLogic(
-              permissionRepository:
-                  context.read<PermissionRepositoryInterface>(),
-            ),
+            create: (_) => AudioPlayerLogic(),
           ),
         ],
         child: Center(

@@ -18,24 +18,15 @@ abstract class AudioPlayerLogicBase extends ValueNotifier<AudioPlayerState> {
 }
 
 class AudioPlayerLogic extends AudioPlayerLogicBase {
-  AudioPlayerLogic({required this.permissionRepository})
-      : super(const AudioPlayerState.pause());
-
-  final PermissionRepositoryInterface permissionRepository;
+  AudioPlayerLogic() : super(const AudioPlayerState.pause());
 
   final _player = AudioPlayer();
 
   set _notify(AudioPlayerState state) => value = state;
 
   /// Starts the audio. [path] is a path to the audio file.
-  /// Throws an [Exception] when the storage permission is not granted.
   @override
   Future<void> play({required String path}) async {
-    // TODO: ask permission to access storage
-    //if (!await permissionLogic.hasRecordPermission) {
-    //  throw Exception('No permission to access storage.');
-    //}
-
     await _player.setUrl(path);
     unawaited(
       _player.play().whenComplete(

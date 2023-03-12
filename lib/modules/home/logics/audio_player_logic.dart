@@ -35,11 +35,16 @@ class AudioPlayerLogic extends AudioPlayerLogicBase {
     //if (!await permissionLogic.hasRecordPermission) {
     //  throw Exception('No permission to access storage.');
     //}
+
     await _player.setUrl(path);
     unawaited(
       _player.play().whenComplete(
-            () => _notify = const AudioPlayerState.pause(),
-          ),
+        () async {
+          await _player.stop();
+          // TODO: manage more 2 states for audio player
+          _notify = const AudioPlayerState.pause();
+        },
+      ),
     );
     _notify = const AudioPlayerState.play();
   }

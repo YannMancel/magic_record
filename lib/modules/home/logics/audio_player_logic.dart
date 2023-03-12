@@ -18,10 +18,10 @@ abstract class AudioPlayerLogicBase extends ValueNotifier<AudioPlayerState> {
 }
 
 class AudioPlayerLogic extends AudioPlayerLogicBase {
-  AudioPlayerLogic({required this.permissionLogic})
+  AudioPlayerLogic({required this.permissionRepository})
       : super(const AudioPlayerState.pause());
 
-  final PermissionLogicInterface permissionLogic;
+  final PermissionRepositoryInterface permissionRepository;
 
   final _player = AudioPlayer();
 

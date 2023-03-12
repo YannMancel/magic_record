@@ -28,13 +28,15 @@ class HomePage extends StatelessWidget {
           ChangeNotifierProvider<AudioRecorderLogicBase>(
             lazy: false,
             create: (context) => AudioRecorderLogic(
-              permissionLogic: context.read<PermissionLogicInterface>(),
+              permissionRepository:
+                  context.read<PermissionRepositoryInterface>(),
             ),
           ),
           ChangeNotifierProvider<AudioPlayerLogicBase>(
             lazy: true,
             create: (context) => AudioPlayerLogic(
-              permissionLogic: context.read<PermissionLogicInterface>(),
+              permissionRepository:
+                  context.read<PermissionRepositoryInterface>(),
             ),
           ),
         ],

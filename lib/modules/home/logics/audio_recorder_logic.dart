@@ -19,10 +19,10 @@ abstract class AudioRecorderLogicBase
 }
 
 class AudioRecorderLogic extends AudioRecorderLogicBase {
-  AudioRecorderLogic({required this.permissionLogic})
+  AudioRecorderLogic({required this.permissionRepository})
       : super(const AudioRecorderState.off());
 
-  final PermissionLogicInterface permissionLogic;
+  final PermissionRepositoryInterface permissionRepository;
 
   final _recorder = Record();
 
@@ -37,7 +37,7 @@ class AudioRecorderLogic extends AudioRecorderLogicBase {
   /// Throws an [Exception] when the record permission is not granted.
   @override
   Future<void> start({String? path}) async {
-    if (!await permissionLogic.hasRecordPermission) {
+    if (!await permissionRepository.hasRecordPermission) {
       throw Exception('No permission to record audio.');
     }
 

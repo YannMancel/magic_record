@@ -1,13 +1,13 @@
 import 'package:permission_handler/permission_handler.dart'
     show Permission, PermissionActions, PermissionStatusGetters;
 
-/// This logic checks the record permission.
-abstract class PermissionLogicInterface {
+/// This repository checks the record permission.
+abstract class PermissionRepositoryInterface {
   Future<bool> get hasRecordPermission;
 }
 
-class PermissionLogic implements PermissionLogicInterface {
-  const PermissionLogic();
+class PermissionRepository implements PermissionRepositoryInterface {
+  const PermissionRepository();
 
   @override
   Future<bool> get hasRecordPermission async {

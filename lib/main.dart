@@ -5,9 +5,9 @@ import 'package:provider/provider.dart' show Provider;
 
 void main() {
   runApp(
-    Provider<PermissionLogicInterface>(
+    Provider<PermissionRepositoryInterface>(
       lazy: true,
-      create: (_) => const PermissionLogic(),
+      create: (_) => const PermissionRepository(),
       child: const App(),
     ),
   );

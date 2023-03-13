@@ -1,15 +1,18 @@
 import 'dart:async' show Completer, Future;
 
-import 'package:shared_preferences/shared_preferences.dart'
-    show SharedPreferences;
+import 'package:hive_flutter/hive_flutter.dart' show Box, Hive, HiveX;
 
 abstract class StorageRepositoryInterface {
-  Future<List<String>?> getStringList({required String key});
-  Future<bool> setStringList({
+  Future<List<dynamic>?> get({
     required String key,
-    required List<String> values,
+    List<dynamic>? defaultValue,
   });
-  Future<bool> removeAllData({required String key});
+  Future<void> put({
+    required String key,
+    required List<dynamic> value,
+  });
+  Future<void> delete({required String key});
+  Future<void> onDispose();
 }
 
 class StorageRepository implements StorageRepositoryInterface {
@@ -17,11 +20,12 @@ class StorageRepository implements StorageRepositoryInterface {
     _setupAsync();
   }
 
-  late SharedPreferences _sharedPreferences;
+  late Box<List<dynamic>> _box;
   final Completer<void> _completer = Completer<void>();
 
   Future<void> _setupAsync() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+    await Hive.initFlutter();
+    _box = await Hive.openBox<List<dynamic>>('my_audio_records');
     _completer.complete();
   }
 
@@ -30,23 +34,32 @@ class StorageRepository implements StorageRepositoryInterface {
   }
 
   @override
-  Future<List<String>?> getStringList({required String key}) async {
-    await _waitSetup();
-    return _sharedPreferences.getStringList(key);
-  }
-
-  @override
-  Future<bool> setStringList({
+  Future<List<dynamic>?> get({
     required String key,
-    required List<String> values,
+    List<dynamic>? defaultValue,
   }) async {
     await _waitSetup();
-    return _sharedPreferences.setStringList(key, values);
+    return _box.get(key, defaultValue: defaultValue);
   }
 
   @override
-  Future<bool> removeAllData({required String key}) async {
+  Future<void> put({
+    required String key,
+    required List<dynamic> value,
+  }) async {
     await _waitSetup();
-    return _sharedPreferences.remove(key);
+    await _box.put(key, value);
+  }
+
+  @override
+  Future<void> delete({required String key}) async {
+    await _waitSetup();
+    await _box.delete(key);
+  }
+
+  @override
+  Future<void> onDispose() async {
+    await _box.close();
+    await Hive.close();
   }
 }

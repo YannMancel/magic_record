@@ -29,7 +29,8 @@
   * [freezed][dependencies_freezed]
   * [freezed_annotation][dependencies_freezed_annotation]
 * Local Storage
-  * [shared_preferences][dependencies_shared_preferences]
+  * [hive][dependencies_hive]
+  * [hive_flutter][dependencies_hive_flutter]
 
 ## Troubleshooting
 
@@ -55,7 +56,8 @@
 [dependencies_build_runner]: https://pub.dev/packages/build_runner
 [dependencies_freezed]: https://pub.dev/packages/freezed
 [dependencies_freezed_annotation]: https://pub.dev/packages/freezed_annotation
-[dependencies_shared_preferences]: https://pub.dev/packages/shared_preferences
+[dependencies_hive]: https://pub.dev/packages/hive
+[dependencies_hive_flutter]: https://pub.dev/packages/hive_flutter
 [useful_android_studio]: https://developer.android.com/studio
 [useful_virtual_device]: https://developer.android.com/studio/run/managing-avds.html
 [useful_developer_options]: https://developer.android.com/studio/debug/dev-options.html#enable

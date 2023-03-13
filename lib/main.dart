@@ -15,6 +15,7 @@ void main() {
         Provider<StorageRepositoryInterface>(
           lazy: true,
           create: (_) => StorageRepository(),
+          dispose: (_, repository) => repository.onDispose(),
         ),
       ],
       child: const App(),

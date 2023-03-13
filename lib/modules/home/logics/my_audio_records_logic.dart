@@ -7,7 +7,7 @@ import 'package:magic_record/_features.dart';
 /// audio list.
 ///
 /// In addition, it has the following method:
-/// - [AudioPlayerLogicBase.add]
+/// - [MyAudioRecordsLogicBase.add]
 abstract class MyAudioRecordsLogicBase extends ValueNotifier<List<String>> {
   MyAudioRecordsLogicBase(super.value);
 
@@ -23,13 +23,28 @@ class MyAudioRecordsLogic extends MyAudioRecordsLogicBase {
   final StorageRepositoryInterface storageRepository;
   final Completer<void> _completer = Completer<void>();
 
-  static const _kStorageKey = 'audio';
+  static const _kStorageKey = 'records';
+  static const _kAudioPathKey = 'audio_path';
 
   set _notify(List<String> values) => value = values;
 
+  Map<String, String> _toJson(String value) {
+    return <String, String>{
+      _kAudioPathKey: value,
+    };
+  }
+
+  String _fromJson(dynamic value) {
+    final json = (value as Map<dynamic, dynamic>).cast<String, String>();
+    return json[_kAudioPathKey] ?? '';
+  }
+
   Future<void> _setup() async {
-    final values = await storageRepository.getStringList(key: _kStorageKey);
-    _notify = values ?? List<String>.empty();
+    final values = await storageRepository.get(
+      key: _kStorageKey,
+      defaultValue: List<dynamic>.empty(),
+    );
+    _notify = values?.map(_fromJson).toList() ?? List<String>.empty();
     _completer.complete();
   }
 
@@ -41,10 +56,10 @@ class MyAudioRecordsLogic extends MyAudioRecordsLogicBase {
   Future<void> add(String audioPath) async {
     await _waitSetup();
     final updatedAudioRecords = <String>[audioPath, ...value];
-    final hasSaved = await storageRepository.setStringList(
+    await storageRepository.put(
       key: _kStorageKey,
-      values: updatedAudioRecords,
+      value: updatedAudioRecords.map(_toJson).toList(),
     );
-    if (hasSaved) _notify = updatedAudioRecords;
+    _notify = updatedAudioRecords;
   }
 }

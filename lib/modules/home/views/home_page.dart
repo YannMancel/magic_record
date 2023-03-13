@@ -36,23 +36,76 @@ class HomePage extends StatelessWidget {
             lazy: true,
             create: (_) => AudioPlayerLogic(),
           ),
-        ],
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
-              _AudioRecorderButton(),
-              _AudioPlayerButton(),
-            ],
+          ChangeNotifierProvider<MyAudioRecordsLogicBase>(
+            lazy: false,
+            create: (context) => MyAudioRecordsLogic(
+              storageRepository: context.read<StorageRepositoryInterface>(),
+            ),
           ),
+        ],
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            const _AudioRecords(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const <Widget>[
+                  _AudioRecorderButton(),
+                  _AudioPlayerButton(),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
+class _AudioRecords extends StatelessWidget {
+  const _AudioRecords();
+
+  @override
+  Widget build(BuildContext context) {
+    final myAudioRecords = context.watch<MyAudioRecordsLogicBase>().value;
+
+    if (myAudioRecords.isEmpty) {
+      return const Center(
+        child: Text('No record'),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 30.0),
+      itemCount: myAudioRecords.length,
+      itemBuilder: (_, index) {
+        final audioRecord = myAudioRecords[index];
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: _AudioCard(audioRecord),
+        );
+      },
+    );
+  }
+}
+
 class _AudioRecorderButton extends StatelessWidget {
   const _AudioRecorderButton();
+
+  Future<void> _start(BuildContext context) async {
+    final audioRecordLogic = context.read<AudioRecorderLogicBase>();
+    await audioRecordLogic.start();
+  }
+
+  Future<void> _stop(BuildContext context) async {
+    final audioRecordLogic = context.read<AudioRecorderLogicBase>();
+    final myAudioRecordsLogic = context.read<MyAudioRecordsLogicBase>();
+
+    final audioPath = await audioRecordLogic.stop();
+    if (audioPath != null) await myAudioRecordsLogic.add(audioPath);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +118,9 @@ class _AudioRecorderButton extends StatelessWidget {
       ),
       onPressed: () async {
         try {
-          final logic = context.read<AudioRecorderLogicBase>();
           await audioRecorderState.when<Future<void>>(
-            on: logic.stop,
-            off: logic.start,
+            on: () => _stop(context),
+            off: () => _start(context),
           );
         } catch (e) {
           final message = e.toString();
@@ -122,6 +174,32 @@ class _AudioPlayerButton extends StatelessWidget {
           pause: () => Icons.play_arrow,
         ),
         size: 60.0,
+      ),
+    );
+  }
+}
+
+class _AudioCard extends StatelessWidget {
+  const _AudioCard(this.audioPath);
+
+  final String audioPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4.0,
+      margin: EdgeInsets.zero,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4.0),
+        onTap: () {
+          //TODO: add event
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(audioPath),
+          ),
+        ),
       ),
     );
   }

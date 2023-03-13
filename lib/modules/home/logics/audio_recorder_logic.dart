@@ -15,7 +15,7 @@ abstract class AudioRecorderLogicBase
 
   String? get audioPath;
   Future<void> start({String? path});
-  Future<void> stop();
+  Future<String?> stop();
 }
 
 class AudioRecorderLogic extends AudioRecorderLogicBase {
@@ -46,12 +46,13 @@ class AudioRecorderLogic extends AudioRecorderLogicBase {
     _notify = const AudioRecorderState.on();
   }
 
-  /// Stops the voice recording.
+  /// Stops the voice recording and returns the audio path.
   @override
-  Future<void> stop() async {
+  Future<String?> stop() async {
     _audioPath = await _recorder.stop();
     if (kDebugMode) print('Audio Path: $_audioPath');
     _notify = const AudioRecorderState.off();
+    return _audioPath;
   }
 
   @override

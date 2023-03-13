@@ -25,13 +25,13 @@ class StorageRepository implements StorageRepositoryInterface {
     _completer.complete();
   }
 
-  Future<void> _waitInitialisation() async {
+  Future<void> _waitSetup() async {
     if (!_completer.isCompleted) await _completer.future;
   }
 
   @override
   Future<List<String>?> getStringList({required String key}) async {
-    await _waitInitialisation();
+    await _waitSetup();
     return _sharedPreferences.getStringList(key);
   }
 
@@ -40,13 +40,13 @@ class StorageRepository implements StorageRepositoryInterface {
     required String key,
     required List<String> values,
   }) async {
-    await _waitInitialisation();
+    await _waitSetup();
     return _sharedPreferences.setStringList(key, values);
   }
 
   @override
   Future<bool> removeAllData({required String key}) async {
-    await _waitInitialisation();
+    await _waitSetup();
     return _sharedPreferences.remove(key);
   }
 }

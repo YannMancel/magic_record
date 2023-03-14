@@ -22,7 +22,7 @@ class AudioRecorderLogic implements AudioRecorderLogicInterface {
   final PermissionRepositoryInterface permissionRepository;
   final _recorder = Record();
   final _stateNotifier =
-      ValueNotifier<AudioRecorderState>(const AudioRecorderState.idle());
+      AudioRecorderStateNotifier(const AudioRecorderState.idle());
 
   set _notify(AudioRecorderState state) => _stateNotifier.value = state;
 

@@ -4,8 +4,8 @@ import 'package:magic_record/_features.dart';
 import 'package:provider/provider.dart'
     show ChangeNotifierProvider, Consumer, ReadContext, WatchContext;
 
-/// To use This widget, we need to instance [AudioRecorderLogicInterface] and
-/// [MyAudioRecordsLogicBase].
+/// To use this widget, we need to instance [AudioRecorderLogicInterface] and
+/// [MyAudioRecordsLogicInterface].
 class AudioRecorderButton extends StatelessWidget {
   const AudioRecorderButton({super.key});
 
@@ -16,7 +16,7 @@ class AudioRecorderButton extends StatelessWidget {
 
   Future<void> _stop(BuildContext context) async {
     final audioRecordLogic = context.read<AudioRecorderLogicInterface>();
-    final myAudioRecordsLogic = context.read<MyAudioRecordsLogicBase>();
+    final myAudioRecordsLogic = context.read<MyAudioRecordsLogicInterface>();
 
     final audioPath = await audioRecordLogic.stop();
     if (audioPath != null) {

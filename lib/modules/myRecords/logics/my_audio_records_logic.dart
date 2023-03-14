@@ -3,31 +3,30 @@ import 'dart:async' show Completer, Future;
 import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:magic_record/_features.dart';
 
-/// The logic is a [ValueNotifier] of [AudioRecord]s.
-///
-/// In addition, it has the following method:
-/// - [MyAudioRecordsLogicBase.add]
-abstract class MyAudioRecordsLogicBase
-    extends ValueNotifier<List<AudioRecord>> {
-  MyAudioRecordsLogicBase(super.value);
+typedef AudioRecordsNotifier = ValueNotifier<List<AudioRecord>>;
 
+/// An abstract class which has the following methods:
+/// - [MyAudioRecordsLogicInterface.stateNotifier]
+/// - [MyAudioRecordsLogicInterface.add]
+abstract class MyAudioRecordsLogicInterface {
+  AudioRecordsNotifier get stateNotifier;
   Future<void> add(AudioRecord audioRecord);
 }
 
-class MyAudioRecordsLogic extends MyAudioRecordsLogicBase {
-  MyAudioRecordsLogic({required this.storageRepository})
-      : super(List<AudioRecord>.empty()) {
-    _setup();
+class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
+  MyAudioRecordsLogic({required this.storageRepository}) {
+    _setupAsync();
   }
 
   final StorageRepositoryInterface storageRepository;
   final Completer<void> _completer = Completer<void>();
+  final _stateNotifier = AudioRecordsNotifier(List<AudioRecord>.empty());
 
   static const _kStorageKey = 'records';
   static const _kFormattedDateKey = 'formatted_date';
   static const _kAudioPathKey = 'audio_path';
 
-  set _notify(List<AudioRecord> values) => value = values;
+  set _notify(List<AudioRecord> values) => _stateNotifier.value = values;
 
   Map<String, String> _toJson(AudioRecord value) {
     return <String, String>{
@@ -45,7 +44,7 @@ class MyAudioRecordsLogic extends MyAudioRecordsLogicBase {
     );
   }
 
-  Future<void> _setup() async {
+  Future<void> _setupAsync() async {
     final values = await storageRepository.get(
       key: _kStorageKey,
       defaultValue: List<dynamic>.empty(),
@@ -59,9 +58,15 @@ class MyAudioRecordsLogic extends MyAudioRecordsLogicBase {
   }
 
   @override
+  AudioRecordsNotifier get stateNotifier => _stateNotifier;
+
+  @override
   Future<void> add(AudioRecord audioRecord) async {
     await _waitSetup();
-    final updatedAudioRecords = <AudioRecord>[...value, audioRecord];
+    final updatedAudioRecords = <AudioRecord>[
+      ..._stateNotifier.value,
+      audioRecord,
+    ];
     await storageRepository.put(
       key: _kStorageKey,
       value: updatedAudioRecords.map(_toJson).toList(),

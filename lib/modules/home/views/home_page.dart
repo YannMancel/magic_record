@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_record/_features.dart';
 import 'package:provider/provider.dart'
-    show
-        ChangeNotifierProvider,
-        MultiProvider,
-        Provider,
-        ReadContext,
-        WatchContext;
+    show MultiProvider, Provider, ReadContext;
 import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 class HomePage extends StatelessWidget {
@@ -33,11 +28,11 @@ class HomePage extends StatelessWidget {
             ),
             dispose: (_, logic) => logic.onDispose(),
           ),
-          ChangeNotifierProvider<AudioPlayerLogicBase>(
-            lazy: true,
-            create: (_) => AudioPlayerLogic(),
-          ),
-          ChangeNotifierProvider<MyAudioRecordsLogicBase>(
+          //ChangeNotifierProvider<AudioPlayerLogicBase>(
+          //  lazy: true,
+          //  create: (_) => AudioPlayerLogic(),
+          //),
+          Provider<MyAudioRecordsLogicInterface>(
             lazy: false,
             create: (context) => MyAudioRecordsLogic(
               storageRepository: context.read<StorageRepositoryInterface>(),
@@ -47,7 +42,13 @@ class HomePage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: const <Widget>[
-            _AudioRecords(),
+            MyAudioRecordsWidget(
+              padding: EdgeInsets.only(
+                left: 8.0,
+                right: 8.0,
+                bottom: 108.0,
+              ),
+            ),
             Padding(
               padding: EdgeInsets.all(16.0),
               child: AudioRecorderButton(),
@@ -59,68 +60,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _AudioRecords extends StatelessWidget {
-  const _AudioRecords();
-
-  @override
-  Widget build(BuildContext context) {
-    final myAudioRecords = context.watch<MyAudioRecordsLogicBase>().value;
-
-    if (myAudioRecords.isEmpty) {
-      return const Center(
-        child: Text('No record'),
-      );
-    }
-
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.only(
-        left: 8.0,
-        right: 8.0,
-        bottom: 108.0,
-      ),
-      itemCount: myAudioRecords.length,
-      itemBuilder: (_, index) {
-        final audioRecord = myAudioRecords[index];
-        return Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: _AudioCard(audioRecord),
-        );
-      },
-    );
-  }
-}
-
-class _AudioCard extends StatelessWidget {
-  const _AudioCard(this.audioRecord);
-
-  final AudioRecord audioRecord;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.zero,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(4.0),
-        onTap: () {
-          //TODO: add event
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(audioRecord.audioPath),
-              Text(audioRecord.formattedDate),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
+/*
 class _AudioPlayerButton extends StatelessWidget {
   const _AudioPlayerButton();
 
@@ -164,3 +104,4 @@ class _AudioPlayerButton extends StatelessWidget {
     );
   }
 }
+*/

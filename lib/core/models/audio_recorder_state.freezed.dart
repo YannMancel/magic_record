@@ -18,39 +18,45 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AudioRecorderState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() on,
-    required TResult Function() off,
+    required TResult Function() idle,
+    required TResult Function() start,
+    required TResult Function(String? audioPath) stop,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? on,
-    TResult? Function()? off,
+    TResult? Function()? idle,
+    TResult? Function()? start,
+    TResult? Function(String? audioPath)? stop,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? on,
-    TResult Function()? off,
+    TResult Function()? idle,
+    TResult Function()? start,
+    TResult Function(String? audioPath)? stop,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_On value) on,
-    required TResult Function(_Off value) off,
+    required TResult Function(_Idle value) idle,
+    required TResult Function(_Start value) start,
+    required TResult Function(_Stop value) stop,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_On value)? on,
-    TResult? Function(_Off value)? off,
+    TResult? Function(_Idle value)? idle,
+    TResult? Function(_Start value)? start,
+    TResult? Function(_Stop value)? stop,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_On value)? on,
-    TResult Function(_Off value)? off,
+    TResult Function(_Idle value)? idle,
+    TResult Function(_Start value)? start,
+    TResult Function(_Stop value)? stop,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -75,33 +81,33 @@ class _$AudioRecorderStateCopyWithImpl<$Res, $Val extends AudioRecorderState>
 }
 
 /// @nodoc
-abstract class _$$_OnCopyWith<$Res> {
-  factory _$$_OnCopyWith(_$_On value, $Res Function(_$_On) then) =
-      __$$_OnCopyWithImpl<$Res>;
+abstract class _$$_IdleCopyWith<$Res> {
+  factory _$$_IdleCopyWith(_$_Idle value, $Res Function(_$_Idle) then) =
+      __$$_IdleCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_OnCopyWithImpl<$Res>
-    extends _$AudioRecorderStateCopyWithImpl<$Res, _$_On>
-    implements _$$_OnCopyWith<$Res> {
-  __$$_OnCopyWithImpl(_$_On _value, $Res Function(_$_On) _then)
+class __$$_IdleCopyWithImpl<$Res>
+    extends _$AudioRecorderStateCopyWithImpl<$Res, _$_Idle>
+    implements _$$_IdleCopyWith<$Res> {
+  __$$_IdleCopyWithImpl(_$_Idle _value, $Res Function(_$_Idle) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_On implements _On {
-  const _$_On();
+class _$_Idle implements _Idle {
+  const _$_Idle();
 
   @override
   String toString() {
-    return 'AudioRecorderState.on()';
+    return 'AudioRecorderState.idle()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_On);
+        (other.runtimeType == runtimeType && other is _$_Idle);
   }
 
   @override
@@ -110,30 +116,33 @@ class _$_On implements _On {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() on,
-    required TResult Function() off,
+    required TResult Function() idle,
+    required TResult Function() start,
+    required TResult Function(String? audioPath) stop,
   }) {
-    return on();
+    return idle();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? on,
-    TResult? Function()? off,
+    TResult? Function()? idle,
+    TResult? Function()? start,
+    TResult? Function(String? audioPath)? stop,
   }) {
-    return on?.call();
+    return idle?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? on,
-    TResult Function()? off,
+    TResult Function()? idle,
+    TResult Function()? start,
+    TResult Function(String? audioPath)? stop,
     required TResult orElse(),
   }) {
-    if (on != null) {
-      return on();
+    if (idle != null) {
+      return idle();
     }
     return orElse();
   }
@@ -141,67 +150,70 @@ class _$_On implements _On {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_On value) on,
-    required TResult Function(_Off value) off,
+    required TResult Function(_Idle value) idle,
+    required TResult Function(_Start value) start,
+    required TResult Function(_Stop value) stop,
   }) {
-    return on(this);
+    return idle(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_On value)? on,
-    TResult? Function(_Off value)? off,
+    TResult? Function(_Idle value)? idle,
+    TResult? Function(_Start value)? start,
+    TResult? Function(_Stop value)? stop,
   }) {
-    return on?.call(this);
+    return idle?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_On value)? on,
-    TResult Function(_Off value)? off,
+    TResult Function(_Idle value)? idle,
+    TResult Function(_Start value)? start,
+    TResult Function(_Stop value)? stop,
     required TResult orElse(),
   }) {
-    if (on != null) {
-      return on(this);
+    if (idle != null) {
+      return idle(this);
     }
     return orElse();
   }
 }
 
-abstract class _On implements AudioRecorderState {
-  const factory _On() = _$_On;
+abstract class _Idle implements AudioRecorderState {
+  const factory _Idle() = _$_Idle;
 }
 
 /// @nodoc
-abstract class _$$_OffCopyWith<$Res> {
-  factory _$$_OffCopyWith(_$_Off value, $Res Function(_$_Off) then) =
-      __$$_OffCopyWithImpl<$Res>;
+abstract class _$$_StartCopyWith<$Res> {
+  factory _$$_StartCopyWith(_$_Start value, $Res Function(_$_Start) then) =
+      __$$_StartCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_OffCopyWithImpl<$Res>
-    extends _$AudioRecorderStateCopyWithImpl<$Res, _$_Off>
-    implements _$$_OffCopyWith<$Res> {
-  __$$_OffCopyWithImpl(_$_Off _value, $Res Function(_$_Off) _then)
+class __$$_StartCopyWithImpl<$Res>
+    extends _$AudioRecorderStateCopyWithImpl<$Res, _$_Start>
+    implements _$$_StartCopyWith<$Res> {
+  __$$_StartCopyWithImpl(_$_Start _value, $Res Function(_$_Start) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Off implements _Off {
-  const _$_Off();
+class _$_Start implements _Start {
+  const _$_Start();
 
   @override
   String toString() {
-    return 'AudioRecorderState.off()';
+    return 'AudioRecorderState.start()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Off);
+        (other.runtimeType == runtimeType && other is _$_Start);
   }
 
   @override
@@ -210,30 +222,33 @@ class _$_Off implements _Off {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() on,
-    required TResult Function() off,
+    required TResult Function() idle,
+    required TResult Function() start,
+    required TResult Function(String? audioPath) stop,
   }) {
-    return off();
+    return start();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? on,
-    TResult? Function()? off,
+    TResult? Function()? idle,
+    TResult? Function()? start,
+    TResult? Function(String? audioPath)? stop,
   }) {
-    return off?.call();
+    return start?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? on,
-    TResult Function()? off,
+    TResult Function()? idle,
+    TResult Function()? start,
+    TResult Function(String? audioPath)? stop,
     required TResult orElse(),
   }) {
-    if (off != null) {
-      return off();
+    if (start != null) {
+      return start();
     }
     return orElse();
   }
@@ -241,35 +256,175 @@ class _$_Off implements _Off {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_On value) on,
-    required TResult Function(_Off value) off,
+    required TResult Function(_Idle value) idle,
+    required TResult Function(_Start value) start,
+    required TResult Function(_Stop value) stop,
   }) {
-    return off(this);
+    return start(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_On value)? on,
-    TResult? Function(_Off value)? off,
+    TResult? Function(_Idle value)? idle,
+    TResult? Function(_Start value)? start,
+    TResult? Function(_Stop value)? stop,
   }) {
-    return off?.call(this);
+    return start?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_On value)? on,
-    TResult Function(_Off value)? off,
+    TResult Function(_Idle value)? idle,
+    TResult Function(_Start value)? start,
+    TResult Function(_Stop value)? stop,
     required TResult orElse(),
   }) {
-    if (off != null) {
-      return off(this);
+    if (start != null) {
+      return start(this);
     }
     return orElse();
   }
 }
 
-abstract class _Off implements AudioRecorderState {
-  const factory _Off() = _$_Off;
+abstract class _Start implements AudioRecorderState {
+  const factory _Start() = _$_Start;
+}
+
+/// @nodoc
+abstract class _$$_StopCopyWith<$Res> {
+  factory _$$_StopCopyWith(_$_Stop value, $Res Function(_$_Stop) then) =
+      __$$_StopCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? audioPath});
+}
+
+/// @nodoc
+class __$$_StopCopyWithImpl<$Res>
+    extends _$AudioRecorderStateCopyWithImpl<$Res, _$_Stop>
+    implements _$$_StopCopyWith<$Res> {
+  __$$_StopCopyWithImpl(_$_Stop _value, $Res Function(_$_Stop) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? audioPath = freezed,
+  }) {
+    return _then(_$_Stop(
+      audioPath: freezed == audioPath
+          ? _value.audioPath
+          : audioPath // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Stop implements _Stop {
+  const _$_Stop({this.audioPath});
+
+  @override
+  final String? audioPath;
+
+  @override
+  String toString() {
+    return 'AudioRecorderState.stop(audioPath: $audioPath)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Stop &&
+            (identical(other.audioPath, audioPath) ||
+                other.audioPath == audioPath));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, audioPath);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_StopCopyWith<_$_Stop> get copyWith =>
+      __$$_StopCopyWithImpl<_$_Stop>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() idle,
+    required TResult Function() start,
+    required TResult Function(String? audioPath) stop,
+  }) {
+    return stop(audioPath);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
+    TResult? Function()? start,
+    TResult? Function(String? audioPath)? stop,
+  }) {
+    return stop?.call(audioPath);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
+    TResult Function()? start,
+    TResult Function(String? audioPath)? stop,
+    required TResult orElse(),
+  }) {
+    if (stop != null) {
+      return stop(audioPath);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Idle value) idle,
+    required TResult Function(_Start value) start,
+    required TResult Function(_Stop value) stop,
+  }) {
+    return stop(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Idle value)? idle,
+    TResult? Function(_Start value)? start,
+    TResult? Function(_Stop value)? stop,
+  }) {
+    return stop?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Idle value)? idle,
+    TResult Function(_Start value)? start,
+    TResult Function(_Stop value)? stop,
+    required TResult orElse(),
+  }) {
+    if (stop != null) {
+      return stop(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Stop implements AudioRecorderState {
+  const factory _Stop({final String? audioPath}) = _$_Stop;
+
+  String? get audioPath;
+  @JsonKey(ignore: true)
+  _$$_StopCopyWith<_$_Stop> get copyWith => throw _privateConstructorUsedError;
 }

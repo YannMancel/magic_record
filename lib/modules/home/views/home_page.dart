@@ -4,8 +4,8 @@ import 'package:provider/provider.dart'
     show
         ChangeNotifierProvider,
         MultiProvider,
+        Provider,
         ReadContext,
-        SelectContext,
         WatchContext;
 import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
@@ -25,12 +25,13 @@ class HomePage extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: <SingleChildWidget>[
-          ChangeNotifierProvider<AudioRecorderLogicBase>(
+          Provider<AudioRecorderLogicInterface>(
             lazy: false,
             create: (context) => AudioRecorderLogic(
               permissionRepository:
                   context.read<PermissionRepositoryInterface>(),
             ),
+            dispose: (_, logic) => logic.onDispose(),
           ),
           ChangeNotifierProvider<AudioPlayerLogicBase>(
             lazy: true,
@@ -45,17 +46,11 @@ class HomePage extends StatelessWidget {
         ],
         child: Stack(
           alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            const _AudioRecords(),
+          children: const <Widget>[
+            _AudioRecords(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  _AudioRecorderButton(),
-                  _AudioPlayerButton(),
-                ],
-              ),
+              padding: EdgeInsets.all(16.0),
+              child: AudioRecorderButton(),
             ),
           ],
         ),
@@ -91,48 +86,27 @@ class _AudioRecords extends StatelessWidget {
   }
 }
 
-class _AudioRecorderButton extends StatelessWidget {
-  const _AudioRecorderButton();
+class _AudioCard extends StatelessWidget {
+  const _AudioCard(this.audioPath);
 
-  Future<void> _start(BuildContext context) async {
-    final audioRecordLogic = context.read<AudioRecorderLogicBase>();
-    await audioRecordLogic.start();
-  }
-
-  Future<void> _stop(BuildContext context) async {
-    final audioRecordLogic = context.read<AudioRecorderLogicBase>();
-    final myAudioRecordsLogic = context.read<MyAudioRecordsLogicBase>();
-
-    final audioPath = await audioRecordLogic.stop();
-    if (audioPath != null) await myAudioRecordsLogic.add(audioPath);
-  }
+  final String audioPath;
 
   @override
   Widget build(BuildContext context) {
-    final audioRecorderState = context.watch<AudioRecorderLogicBase>().value;
-
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(8.0),
-        shape: const CircleBorder(),
-      ),
-      onPressed: () async {
-        try {
-          await audioRecorderState.when<Future<void>>(
-            on: () => _stop(context),
-            off: () => _start(context),
-          );
-        } catch (e) {
-          final message = e.toString();
-          context.notify = message;
-        }
-      },
-      child: Icon(
-        audioRecorderState.when<IconData>(
-          on: () => Icons.stop,
-          off: () => Icons.mic,
+    return Card(
+      elevation: 4.0,
+      margin: EdgeInsets.zero,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4.0),
+        onTap: () {
+          //TODO: add event
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(audioPath),
+          ),
         ),
-        size: 60.0,
       ),
     );
   }
@@ -143,8 +117,11 @@ class _AudioPlayerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioPath = context.select<AudioRecorderLogicBase, String?>(
-      (logic) => logic.audioPath,
+    final audioRecorderState =
+        context.watch<AudioRecorderStateNotifier>().value;
+
+    final audioPath = audioRecorderState.whenOrNull<String>(
+      stop: (audioPath) => audioPath,
     );
 
     if (audioPath == null) return const SizedBox.shrink();
@@ -174,32 +151,6 @@ class _AudioPlayerButton extends StatelessWidget {
           pause: () => Icons.play_arrow,
         ),
         size: 60.0,
-      ),
-    );
-  }
-}
-
-class _AudioCard extends StatelessWidget {
-  const _AudioCard(this.audioPath);
-
-  final String audioPath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.zero,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(4.0),
-        onTap: () {
-          //TODO: add event
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(audioPath),
-          ),
-        ),
       ),
     );
   }

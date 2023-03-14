@@ -31,6 +31,8 @@
 * Local Storage
   * [hive][dependencies_hive]
   * [hive_flutter][dependencies_hive_flutter]
+* Date
+  * [intl][dependencies_intl]
 
 ## Troubleshooting
 
@@ -58,6 +60,7 @@
 [dependencies_freezed_annotation]: https://pub.dev/packages/freezed_annotation
 [dependencies_hive]: https://pub.dev/packages/hive
 [dependencies_hive_flutter]: https://pub.dev/packages/hive_flutter
+[dependencies_intl]: https://pub.dev/packages/intl
 [useful_android_studio]: https://developer.android.com/studio
 [useful_virtual_device]: https://developer.android.com/studio/run/managing-avds.html
 [useful_developer_options]: https://developer.android.com/studio/debug/dev-options.html#enable

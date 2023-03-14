@@ -73,7 +73,12 @@ class _AudioRecords extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 30.0),
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        right: 8.0,
+        bottom: 108.0,
+      ),
       itemCount: myAudioRecords.length,
       itemBuilder: (_, index) {
         final audioRecord = myAudioRecords[index];
@@ -87,9 +92,9 @@ class _AudioRecords extends StatelessWidget {
 }
 
 class _AudioCard extends StatelessWidget {
-  const _AudioCard(this.audioPath);
+  const _AudioCard(this.audioRecord);
 
-  final String audioPath;
+  final AudioRecord audioRecord;
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +108,12 @@ class _AudioCard extends StatelessWidget {
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(audioPath),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(audioRecord.audioPath),
+              Text(audioRecord.formattedDate),
+            ],
           ),
         ),
       ),

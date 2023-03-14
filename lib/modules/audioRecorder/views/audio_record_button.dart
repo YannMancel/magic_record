@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:magic_record/_features.dart';
 import 'package:provider/provider.dart'
     show ChangeNotifierProvider, Consumer, ReadContext, WatchContext;
@@ -18,7 +19,14 @@ class AudioRecorderButton extends StatelessWidget {
     final myAudioRecordsLogic = context.read<MyAudioRecordsLogicBase>();
 
     final audioPath = await audioRecordLogic.stop();
-    if (audioPath != null) await myAudioRecordsLogic.add(audioPath);
+    if (audioPath != null) {
+      final now = DateTime.now();
+      final audioRecord = AudioRecord(
+        formattedDate: DateFormat('yyyy-MM-dd – kk:mm:ss').format(now),
+        audioPath: audioPath,
+      );
+      await myAudioRecordsLogic.add(audioRecord);
+    }
   }
 
   @override

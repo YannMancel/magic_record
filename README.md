@@ -20,6 +20,7 @@
 * Audio
   * [record][dependencies_record]
   * [just_audio][dependencies_just_audio]
+  * [audio_waveforms][dependencies_audio_waveforms]
 * Permissions
   * [permission_handler][dependencies_permission_handler]
 * State Manager
@@ -53,6 +54,7 @@
 [dependencies_flutter_lints]: https://pub.dev/packages/flutter_lints
 [dependencies_record]: https://pub.dev/packages/record
 [dependencies_just_audio]: https://pub.dev/packages/just_audio
+[dependencies_audio_waveforms]: https://pub.dev/packages/audio_waveforms
 [dependencies_permission_handler]: https://pub.dev/packages/permission_handler
 [dependencies_provider]: https://pub.dev/packages/provider
 [dependencies_build_runner]: https://pub.dev/packages/build_runner

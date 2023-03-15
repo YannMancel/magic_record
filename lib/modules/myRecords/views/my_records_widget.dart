@@ -37,41 +37,11 @@ class MyAudioRecordsWidget extends StatelessWidget {
               final audioRecord = myAudioRecords[index];
               return Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: _AudioCard(audioRecord),
+                child: MyAudioCard(audioRecord),
               );
             },
           );
         },
-      ),
-    );
-  }
-}
-
-class _AudioCard extends StatelessWidget {
-  const _AudioCard(this.audioRecord);
-
-  final AudioRecord audioRecord;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.zero,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(4.0),
-        onTap: () {
-          //TODO: add event
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(audioRecord.audioPath),
-              Text(audioRecord.formattedDate),
-            ],
-          ),
-        ),
       ),
     );
   }

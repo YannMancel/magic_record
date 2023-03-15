@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_record/_features.dart';
 import 'package:provider/provider.dart'
-    show ChangeNotifierProvider, Consumer, ReadContext, WatchContext;
+    show ChangeNotifierProvider, Consumer, Provider, ReadContext, WatchContext;
 
 /// To use this widget, we need to instance [MyAudioRecordsLogicInterface].
 class MyAudioRecordsWidget extends StatelessWidget {
@@ -33,7 +33,7 @@ class MyAudioRecordsWidget extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             padding: padding,
             itemCount: myAudioRecords.length,
-            itemBuilder: (_, index) {
+            itemBuilder: (context, index) {
               final audioRecord = myAudioRecords[index];
               return Padding(
                 padding: const EdgeInsets.only(top: 8.0),
@@ -46,7 +46,16 @@ class MyAudioRecordsWidget extends StatelessWidget {
                         .delete(audioRecord);
                     context.notify = 'Audio record dismissed';
                   },
-                  child: MyAudioCard(audioRecord),
+                  child: Provider<AudioPlayerLogicInterface>(
+                    create: (_) => AudioPlayerLogic(
+                      audioPath: audioRecord.audioPath,
+                    ),
+                    dispose: (_, logic) => logic.onDispose(),
+                    child: AudioPlayerCard(
+                      audioRecord,
+                      key: Key(audioRecord.audioPath),
+                    ),
+                  ),
                 ),
               );
             },

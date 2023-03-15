@@ -23,10 +23,6 @@ class HomePage extends StatelessWidget {
           ),
           dispose: (_, logic) => logic.onDispose(),
         ),
-        //ChangeNotifierProvider<AudioPlayerLogicBase>(
-        //  lazy: true,
-        //  create: (_) => AudioPlayerLogic(),
-        //),
         Provider<MyAudioRecordsLogicInterface>(
           lazy: false,
           create: (context) => MyAudioRecordsLogic(
@@ -53,49 +49,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-/*
-class _AudioPlayerButton extends StatelessWidget {
-  const _AudioPlayerButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final audioRecorderState =
-        context.watch<AudioRecorderStateNotifier>().value;
-
-    final audioPath = audioRecorderState.whenOrNull<String>(
-      stop: (audioPath) => audioPath,
-    );
-
-    if (audioPath == null) return const SizedBox.shrink();
-
-    final audioPlayerState = context.watch<AudioPlayerLogicBase>().value;
-
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(8.0),
-        shape: const CircleBorder(),
-      ),
-      onPressed: () async {
-        try {
-          final logic = context.read<AudioPlayerLogicBase>();
-          await audioPlayerState.when<Future<void>>(
-            play: logic.pause,
-            pause: () => logic.play(path: audioPath),
-          );
-        } catch (e) {
-          final message = e.toString();
-          context.notify = message;
-        }
-      },
-      child: Icon(
-        audioPlayerState.when<IconData>(
-          play: () => Icons.pause,
-          pause: () => Icons.play_arrow,
-        ),
-        size: 60.0,
-      ),
-    );
-  }
-}
-*/

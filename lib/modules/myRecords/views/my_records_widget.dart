@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_record/_features.dart';
 import 'package:provider/provider.dart'
-    show ChangeNotifierProvider, Consumer, WatchContext;
+    show ChangeNotifierProvider, Consumer, ReadContext, WatchContext;
 
 /// To use this widget, we need to instance [MyAudioRecordsLogicInterface].
 class MyAudioRecordsWidget extends StatelessWidget {
@@ -37,11 +37,47 @@ class MyAudioRecordsWidget extends StatelessWidget {
               final audioRecord = myAudioRecords[index];
               return Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: MyAudioCard(audioRecord),
+                child: Dismissible(
+                  key: Key(audioRecord.toString()),
+                  background: const _DismissibleBackground(),
+                  onDismissed: (_) {
+                    context
+                        .read<MyAudioRecordsLogicInterface>()
+                        .delete(audioRecord);
+                    context.notify = 'Audio record dismissed';
+                  },
+                  child: MyAudioCard(audioRecord),
+                ),
               );
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class _DismissibleBackground extends StatelessWidget {
+  const _DismissibleBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    const kDeleteIcon = Icon(Icons.delete, color: Colors.white);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+        color: Colors.red,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const <Widget>[
+            kDeleteIcon,
+            kDeleteIcon,
+          ],
+        ),
       ),
     );
   }

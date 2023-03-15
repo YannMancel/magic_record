@@ -1,4 +1,5 @@
 import 'dart:async' show Completer, Future;
+import 'dart:io' show File;
 
 import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:magic_record/_features.dart';
@@ -8,9 +9,11 @@ typedef AudioRecordsNotifier = ValueNotifier<List<AudioRecord>>;
 /// An abstract class which has the following methods:
 /// - [MyAudioRecordsLogicInterface.stateNotifier]
 /// - [MyAudioRecordsLogicInterface.add]
+/// - [MyAudioRecordsLogicInterface.delete]
 abstract class MyAudioRecordsLogicInterface {
   AudioRecordsNotifier get stateNotifier;
   Future<void> add(AudioRecord audioRecord);
+  Future<void> delete(AudioRecord audioRecord);
 }
 
 class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
@@ -67,6 +70,20 @@ class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
       ..._stateNotifier.value,
       audioRecord,
     ];
+    await storageRepository.put(
+      key: _kStorageKey,
+      value: updatedAudioRecords.map(_toJson).toList(),
+    );
+    _notify = updatedAudioRecords;
+  }
+
+  @override
+  Future<void> delete(AudioRecord audioRecord) async {
+    await _waitSetup();
+    final file = File(audioRecord.audioPath);
+    await file.delete();
+    final updatedAudioRecords =
+        _stateNotifier.value.where((e) => e != audioRecord).toList();
     await storageRepository.put(
       key: _kStorageKey,
       value: updatedAudioRecords.map(_toJson).toList(),

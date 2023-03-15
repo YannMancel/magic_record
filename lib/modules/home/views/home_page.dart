@@ -14,47 +14,41 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: MultiProvider(
-        providers: <SingleChildWidget>[
-          Provider<AudioRecorderLogicInterface>(
-            lazy: false,
-            create: (context) => AudioRecorderLogic(
-              permissionRepository:
-                  context.read<PermissionRepositoryInterface>(),
-            ),
-            dispose: (_, logic) => logic.onDispose(),
+    return MultiProvider(
+      providers: <SingleChildWidget>[
+        Provider<AudioRecorderLogicInterface>(
+          lazy: false,
+          create: (context) => AudioRecorderLogic(
+            permissionRepository: context.read<PermissionRepositoryInterface>(),
           ),
-          //ChangeNotifierProvider<AudioPlayerLogicBase>(
-          //  lazy: true,
-          //  create: (_) => AudioPlayerLogic(),
-          //),
-          Provider<MyAudioRecordsLogicInterface>(
-            lazy: false,
-            create: (context) => MyAudioRecordsLogic(
-              storageRepository: context.read<StorageRepositoryInterface>(),
-            ),
-          ),
-        ],
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: const <Widget>[
-            MyAudioRecordsWidget(
-              padding: EdgeInsets.only(
-                left: 8.0,
-                right: 8.0,
-                bottom: 108.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: AudioRecorderButton(),
-            ),
-          ],
+          dispose: (_, logic) => logic.onDispose(),
         ),
+        //ChangeNotifierProvider<AudioPlayerLogicBase>(
+        //  lazy: true,
+        //  create: (_) => AudioPlayerLogic(),
+        //),
+        Provider<MyAudioRecordsLogicInterface>(
+          lazy: false,
+          create: (context) => MyAudioRecordsLogic(
+            storageRepository: context.read<StorageRepositoryInterface>(),
+          ),
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
+        body: const SafeArea(
+          child: MyAudioRecordsWidget(
+            padding: EdgeInsets.only(
+              left: 8.0,
+              right: 8.0,
+              bottom: 108.0,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: const AudioRecorderButton(),
       ),
     );
   }

@@ -39,11 +39,7 @@ class AudioRecorderButton extends StatelessWidget {
         builder: (context, notifier, _) {
           final audioRecorderState = notifier.value;
 
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(8.0),
-              shape: const CircleBorder(),
-            ),
+          return FloatingActionButton(
             onPressed: () async {
               try {
                 await audioRecorderState.maybeWhen<Future<void>>(
@@ -60,7 +56,6 @@ class AudioRecorderButton extends StatelessWidget {
                 start: () => Icons.stop,
                 orElse: () => Icons.mic,
               ),
-              size: 60.0,
             ),
           );
         },

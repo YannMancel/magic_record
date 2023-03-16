@@ -5,9 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart'
     show Box, Hive, HiveInterface, HiveX;
 
 abstract class StorageRepositoryInterface {
-  @visibleForTesting
-  Completer<void> get completer;
-
   Future<List<dynamic>?> get({
     required String key,
     List<dynamic>? defaultValue,
@@ -21,10 +18,9 @@ abstract class StorageRepositoryInterface {
 }
 
 class StorageRepository implements StorageRepositoryInterface {
-  StorageRepository({
-    HiveInterface? hive,
-    this.needToInitiateHive = true,
-  }) : _hive = hive ?? Hive {
+  StorageRepository({HiveInterface? hive})
+      : _hive = hive ?? Hive,
+        needToInitiateHive = (hive == null) {
     _setupAsync();
   }
 
@@ -32,6 +28,8 @@ class StorageRepository implements StorageRepositoryInterface {
   final HiveInterface _hive;
   late Box<List<dynamic>> _box;
   final Completer<void> _completer = Completer<void>();
+  @visibleForTesting
+  Completer<void> get completer => _completer;
 
   Future<void> _setupAsync() async {
     if (needToInitiateHive) await _hive.initFlutter();
@@ -42,10 +40,6 @@ class StorageRepository implements StorageRepositoryInterface {
   Future<void> _waitSetup() async {
     if (!_completer.isCompleted) await _completer.future;
   }
-
-  @visibleForTesting
-  @override
-  Completer<void> get completer => _completer;
 
   @override
   Future<List<dynamic>?> get({

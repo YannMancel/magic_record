@@ -24,13 +24,10 @@ void main() {
     mockHiveInterface = MockHiveInterface();
     mockHiveBox = MockHiveBoxOfList();
 
-    when(mockHiveInterface.openBox<List<dynamic>>('my_audio_records'))
+    when(mockHiveInterface.openBox<List<dynamic>>(any))
         .thenAnswer((_) async => mockHiveBox);
 
-    repository = StorageRepository(
-      hive: mockHiveInterface,
-      needToInitiateHive: false,
-    );
+    repository = StorageRepository(hive: mockHiveInterface);
   });
 
   tearDown(() async {
@@ -40,7 +37,7 @@ void main() {
   });
 
   test('Setup async must called HiveInterface.openBox', () async {
-    await repository.completer.future;
+    await (repository as StorageRepository).completer.future;
     verify(mockHiveInterface.openBox<List<dynamic>>(any)).called(1);
   });
 
@@ -57,7 +54,7 @@ void main() {
     expect(listOrNull!.length, kValue.length);
     verifyInOrder([
       mockHiveInterface.openBox<List<dynamic>>(any),
-      mockHiveBox.get(anything, defaultValue: anyNamed('defaultValue'))
+      mockHiveBox.get(anything, defaultValue: anyNamed('defaultValue')),
     ]);
   });
 
@@ -68,7 +65,7 @@ void main() {
     );
     verifyInOrder([
       mockHiveInterface.openBox<List<dynamic>>(any),
-      mockHiveBox.put(anything, any)
+      mockHiveBox.put(anything, any),
     ]);
   });
 
@@ -76,7 +73,7 @@ void main() {
     await repository.delete(key: 'key');
     verifyInOrder([
       mockHiveInterface.openBox<List<dynamic>>(any),
-      mockHiveBox.delete(anything)
+      mockHiveBox.delete(anything),
     ]);
   });
 }

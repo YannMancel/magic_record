@@ -1,7 +1,7 @@
 import 'dart:async' show Completer, Future;
 import 'dart:io' show File;
 
-import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:flutter/foundation.dart' show ValueNotifier, visibleForTesting;
 import 'package:magic_record/_features.dart';
 
 typedef AudioRecordsNotifier = ValueNotifier<List<AudioRecord>>;
@@ -13,7 +13,7 @@ typedef AudioRecordsNotifier = ValueNotifier<List<AudioRecord>>;
 abstract class MyAudioRecordsLogicInterface {
   AudioRecordsNotifier get stateNotifier;
   Future<void> add(AudioRecord audioRecord);
-  Future<void> delete(AudioRecord audioRecord);
+  Future<void> delete(AudioRecord audioRecord, {bool needToRemoveFile = true});
 }
 
 class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
@@ -23,27 +23,33 @@ class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
 
   final StorageRepositoryInterface storageRepository;
   final Completer<void> _completer = Completer<void>();
+  @visibleForTesting
+  Completer<void> get completer => _completer;
   final _stateNotifier = AudioRecordsNotifier(List<AudioRecord>.empty());
 
   static const _kStorageKey = 'records';
-  static const _kFormattedDateKey = 'formatted_date';
-  static const _kAudioPathKey = 'audio_path';
+  @visibleForTesting
+  static const kFormattedDateKey = 'formatted_date';
+  @visibleForTesting
+  static const kAudioPathKey = 'audio_path';
 
   set _notify(List<AudioRecord> values) => _stateNotifier.value = values;
 
-  Map<String, String> _toJson(AudioRecord value) {
+  @visibleForTesting
+  static Map<String, String> toJson(AudioRecord value) {
     return <String, String>{
-      _kFormattedDateKey: value.formattedDate,
-      _kAudioPathKey: value.audioPath,
+      kFormattedDateKey: value.formattedDate,
+      kAudioPathKey: value.audioPath,
     };
   }
 
-  AudioRecord _fromJson(dynamic value) {
+  @visibleForTesting
+  static AudioRecord fromJson(dynamic value) {
     final json = (value as Map<dynamic, dynamic>).cast<String, String>();
 
     return AudioRecord(
-      formattedDate: json[_kFormattedDateKey] ?? '',
-      audioPath: json[_kAudioPathKey] ?? '',
+      formattedDate: json[kFormattedDateKey] ?? '',
+      audioPath: json[kAudioPathKey] ?? '',
     );
   }
 
@@ -52,7 +58,7 @@ class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
       key: _kStorageKey,
       defaultValue: List<dynamic>.empty(),
     );
-    _notify = values?.map(_fromJson).toList() ?? List<AudioRecord>.empty();
+    _notify = values?.map(fromJson).toList() ?? List<AudioRecord>.empty();
     _completer.complete();
   }
 
@@ -72,21 +78,26 @@ class MyAudioRecordsLogic implements MyAudioRecordsLogicInterface {
     ];
     await storageRepository.put(
       key: _kStorageKey,
-      value: updatedAudioRecords.map(_toJson).toList(),
+      value: updatedAudioRecords.map(toJson).toList(),
     );
     _notify = updatedAudioRecords;
   }
 
   @override
-  Future<void> delete(AudioRecord audioRecord) async {
+  Future<void> delete(
+    AudioRecord audioRecord, {
+    bool needToRemoveFile = true,
+  }) async {
     await _waitSetup();
-    final file = File(audioRecord.audioPath);
-    await file.delete();
+    if (needToRemoveFile) {
+      final file = File(audioRecord.audioPath);
+      await file.delete();
+    }
     final updatedAudioRecords =
         _stateNotifier.value.where((e) => e != audioRecord).toList();
     await storageRepository.put(
       key: _kStorageKey,
-      value: updatedAudioRecords.map(_toJson).toList(),
+      value: updatedAudioRecords.map(toJson).toList(),
     );
     _notify = updatedAudioRecords;
   }

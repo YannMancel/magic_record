@@ -46,7 +46,7 @@ void main() {
     reset(mockRecord);
   });
 
-  test('setup with AudioRecorderState.idle', () async {
+  test('setup with AudioRecorderState.idle', () {
     expect(logic.stateNotifier.value, const AudioRecorderState.idle());
   });
 

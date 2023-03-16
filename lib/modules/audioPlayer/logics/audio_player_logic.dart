@@ -2,7 +2,7 @@ import 'dart:async' show Completer, Future, StreamSubscription;
 
 import 'package:audio_waveforms/audio_waveforms.dart'
     show FinishMode, PlayerController, PlayerState, PlayerStateExtension;
-import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:flutter/foundation.dart' show ValueNotifier, visibleForTesting;
 import 'package:magic_record/_features.dart';
 
 typedef AudioPlayerNotifier = ValueNotifier<AudioPlayerState>;
@@ -22,12 +22,17 @@ abstract class AudioPlayerLogicInterface {
 }
 
 class AudioPlayerLogic implements AudioPlayerLogicInterface {
-  AudioPlayerLogic({required String audioPath}) {
+  AudioPlayerLogic({
+    required String audioPath,
+    PlayerController? playerController,
+  }) : _playerController = playerController ?? PlayerController() {
     _setupAsync(audioPath: audioPath);
   }
 
   final Completer<void> _completer = Completer<void>();
-  final _playerController = PlayerController();
+  @visibleForTesting
+  Completer<void> get completer => _completer;
+  final PlayerController _playerController;
   final _stateNotifier = AudioPlayerNotifier(const AudioPlayerState.pause());
   StreamSubscription<PlayerState>? _playerStateStream;
 

@@ -42,6 +42,7 @@ void main() {
 
   test('Setup async must called HiveInterface.openBox', () async {
     await (logic as MyAudioRecordsLogic).completer.future;
+    expect(logic.stateNotifier.value, List<AudioRecord>.empty());
     verifyInOrder([
       mockHiveInterface.openBox<List<dynamic>>(any),
       mockHiveBox.get(anything, defaultValue: anyNamed('defaultValue')),
@@ -68,7 +69,6 @@ void main() {
       data.add(kAudioRecord);
     });
 
-    expect(logic.stateNotifier.value, List<AudioRecord>.empty());
     await logic.add(kAudioRecord);
     expect(logic.stateNotifier.value, const <AudioRecord>[kAudioRecord]);
     verifyInOrder([
@@ -93,7 +93,6 @@ void main() {
     });
 
     await logic.add(kAudioRecord);
-    expect(logic.stateNotifier.value, const <AudioRecord>[kAudioRecord]);
     await logic.delete(kAudioRecord, needToRemoveFile: false);
     expect(logic.stateNotifier.value, List<AudioRecord>.empty());
     verifyInOrder([

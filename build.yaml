@@ -12,5 +12,6 @@ targets:
       mockito|mockBuilder:
         enabled: true
         generate_for:
+          - "test/logics/audio_player_logic_test.dart"
           - "test/logics/audio_recorder_logic_test.dart"
           - "test/repositories/storage_repository_test.dart"

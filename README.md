@@ -3,6 +3,10 @@
 # magic_record
 **Goal**: A Flutter project to manage voice recorder.
 
+<p align="middle">
+  <img src="./screenshots/screenshot_1.png" width="30%" height="30%">
+</p>
+
 ## Requirements
 * Computer (Windows, Mac or Linux)
 * Android Studio

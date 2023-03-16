@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, kDebugMode;
 import 'package:magic_record/_features.dart';
-import 'package:record/record.dart' show Record;
+import 'package:record/record.dart' show Record, RecordPlatform;
 
 typedef AudioRecorderStateNotifier = ValueNotifier<AudioRecorderState>;
 
@@ -17,10 +17,13 @@ abstract class AudioRecorderLogicInterface {
 }
 
 class AudioRecorderLogic implements AudioRecorderLogicInterface {
-  AudioRecorderLogic({required this.permissionRepository});
+  AudioRecorderLogic({
+    required this.permissionRepository,
+    RecordPlatform? recorder,
+  }) : _recorder = recorder ?? Record();
 
   final PermissionRepositoryInterface permissionRepository;
-  final _recorder = Record();
+  final RecordPlatform _recorder;
   final _stateNotifier =
       AudioRecorderStateNotifier(const AudioRecorderState.idle());
 

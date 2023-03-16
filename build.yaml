@@ -9,3 +9,7 @@ targets:
           - "lib/core/models/audio_player_state.dart"
           - "lib/core/models/audio_record.dart"
           - "lib/core/models/audio_recorder_state.dart"
+      mockito|mockBuilder:
+        enabled: true
+        generate_for:
+          - "test/storage_repository_test.dart"

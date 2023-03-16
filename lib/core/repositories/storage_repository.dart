@@ -1,8 +1,13 @@
 import 'dart:async' show Completer, Future;
 
-import 'package:hive_flutter/hive_flutter.dart' show Box, Hive, HiveX;
+import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:hive_flutter/hive_flutter.dart'
+    show Box, Hive, HiveInterface, HiveX;
 
 abstract class StorageRepositoryInterface {
+  @visibleForTesting
+  Completer<void> get completer;
+
   Future<List<dynamic>?> get({
     required String key,
     List<dynamic>? defaultValue,
@@ -16,22 +21,31 @@ abstract class StorageRepositoryInterface {
 }
 
 class StorageRepository implements StorageRepositoryInterface {
-  StorageRepository() {
+  StorageRepository({
+    HiveInterface? hive,
+    this.needToInitiateHive = true,
+  }) : _hive = hive ?? Hive {
     _setupAsync();
   }
 
+  final bool needToInitiateHive;
+  final HiveInterface _hive;
   late Box<List<dynamic>> _box;
   final Completer<void> _completer = Completer<void>();
 
   Future<void> _setupAsync() async {
-    await Hive.initFlutter();
-    _box = await Hive.openBox<List<dynamic>>('my_audio_records');
+    if (needToInitiateHive) await _hive.initFlutter();
+    _box = await _hive.openBox<List<dynamic>>('my_audio_records');
     _completer.complete();
   }
 
   Future<void> _waitSetup() async {
     if (!_completer.isCompleted) await _completer.future;
   }
+
+  @visibleForTesting
+  @override
+  Completer<void> get completer => _completer;
 
   @override
   Future<List<dynamic>?> get({
@@ -60,6 +74,6 @@ class StorageRepository implements StorageRepositoryInterface {
   @override
   Future<void> onDispose() async {
     await _box.close();
-    await Hive.close();
+    await _hive.close();
   }
 }

@@ -1,4 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart'
+    show anything, expect, isNotNull, setUp, tearDown, test;
 import 'package:hive/hive.dart' show Box, HiveInterface;
 import 'package:magic_record/_features.dart';
 import 'package:mockito/annotations.dart' show GenerateNiceMocks, MockSpec;

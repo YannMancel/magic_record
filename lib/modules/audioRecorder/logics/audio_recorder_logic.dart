@@ -34,7 +34,7 @@ class AudioRecorderLogic implements AudioRecorderLogicInterface {
   /// Throws an [Exception] when the record permission is not granted.
   @override
   Future<void> start({String? path}) async {
-    if (!await permissionRepository.hasRecordPermission) {
+    if (!await permissionRepository.hasMicrophonePermission) {
       throw Exception('No permission to record audio.');
     }
 

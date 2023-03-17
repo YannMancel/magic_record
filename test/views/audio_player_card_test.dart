@@ -28,7 +28,7 @@ void main() {
     reset(mockPlayerController);
   });
 
-  testWidgets('Show pause state', (tester) async {
+  testWidgets('Show play icon must be a success', (tester) async {
     logic = AudioPlayerLogic(
       audioPath: 'https://s3.amazonaws.com/scifri-episodes/'
           'scifri20181123-episode.mp3',
@@ -45,7 +45,7 @@ void main() {
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
   });
 
-  testWidgets('Show play state', (tester) async {
+  testWidgets('Show pause icon must be a success', (tester) async {
     logic = AudioPlayerLogic(
       audioPath: 'https://s3.amazonaws.com/scifri-episodes/'
           'scifri20181123-episode.mp3',

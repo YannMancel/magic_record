@@ -38,7 +38,7 @@ class AudioPlayerLogic implements AudioPlayerLogicInterface {
 
   Future<void> _setupAsync({required String audioPath}) async {
     _playerStateStream = _playerController.onPlayerStateChanged.listen((state) {
-      _notify = _isPlayingState
+      notify = _isPlayingState
           ? const AudioPlayerState.play()
           : const AudioPlayerState.pause();
     });
@@ -56,7 +56,8 @@ class AudioPlayerLogic implements AudioPlayerLogicInterface {
 
   bool get _isPlayingState => _playerController.playerState.isPlaying;
 
-  set _notify(AudioPlayerState state) => _stateNotifier.value = state;
+  @visibleForTesting
+  set notify(AudioPlayerState state) => _stateNotifier.value = state;
 
   @override
   PlayerController get playerController => _playerController;

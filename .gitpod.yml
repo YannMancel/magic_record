@@ -1,0 +1,11 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Setup
+    init: make
+
+vscode:
+  extensions:
+    - Dart-Code.dart-code
+    - Dart-Code.flutter

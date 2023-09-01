@@ -52,7 +52,7 @@
 * [Create a new virtual device][useful_virtual_device]
 * [Enable developer options and debugging][useful_developer_options]
 
-[badge_flutter]: https://img.shields.io/badge/flutter-v3.7.7-blue?logo=flutter
+[badge_flutter]: https://img.shields.io/badge/flutter-v3.10.6-blue?logo=flutter
 [link_flutter_release]: https://docs.flutter.dev/development/tools/sdk/releases
 [dependencies_fvm]: https://fvm.app/
 [dependencies_flutter_lints]: https://pub.dev/packages/flutter_lints
